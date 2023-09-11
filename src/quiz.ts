@@ -263,6 +263,11 @@ export class Quiz {
             }
         }
         this.isEvaluated.set(true);
+        
+        if (typeof this.config.evaluateCallback == 'function') {
+            // parameters must be # of questions, points awarded
+            this.config.evaluateCallback(this.questions.length, points);
+        }
         return points;
     }
 }
