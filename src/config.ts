@@ -16,7 +16,8 @@ const toRename = {
     secondary_color: 'secondaryColor',
     text_color: 'textColor',
     enable_retry: 'enableRetry',
-    evaluate_callback: 'evaluateCallback'
+    evaluate_callback: 'evaluateCallback',
+    pass_percent: 'passPercent'
 };
 
 export class Config {
@@ -30,6 +31,7 @@ export class Config {
     locale: 'de' | 'en' | 'es' | 'fr' | null;
     enableRetry: boolean;
     evaluateCallback: Function;
+    passPercent: number | undefined;
 
     constructor(options: Config | object) {
         // handle <=v0.3.0 snake_case options for backwards compatibility
@@ -46,6 +48,7 @@ export class Config {
         this.locale = get(options['locale'], null);
         this.enableRetry = get(options['enableRetry'],true);
         this.evaluateCallback = get(options['evaluateCallback'],null);
+        this.passPercent = get(options['passPercent'], undefined);
     }
 }
 

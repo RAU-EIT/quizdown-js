@@ -179,6 +179,7 @@ export class Quiz {
     onFirst: Writable<boolean>;
     isEvaluated: Writable<boolean>;
     allVisited: Writable<boolean>;
+    isPassed: Writable<boolean>;
 
     constructor(questions: Array<BaseQuestion>, config: Config) {
         this.index = writable(0);
@@ -198,6 +199,7 @@ export class Quiz {
         this.onFirst = writable(true);
         this.allVisited = writable(this.questions.length == 1);
         this.isEvaluated = writable(false);
+        this.isPassed = writable(false);
         autoBind(this);
     }
 
@@ -265,8 +267,14 @@ export class Quiz {
         this.isEvaluated.set(true);
         
         if (typeof this.config.evaluateCallback == 'function') {
-            // parameters must be # of questions, points awarded
-            this.config.evaluateCallback(this.questions.length, points);
+            // parameters must be # of questions, points awarded, passPercent
+            if (this.config.passPercent > 0) {
+                this.isPassed.set(this.config.passPercent <= (100 * points / this.questions.length));
+                this.config.evaluateCallback(this.questions.length, points, this.config.passPercent);
+            } else {
+                this.config.evaluateCallback(this.questions.length, points, -1);
+            }
+            this.config.evaluateCallback(this.questions.length, points, this.config.passPercent);
         }
         return points;
     }

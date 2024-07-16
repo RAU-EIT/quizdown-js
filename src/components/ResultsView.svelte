@@ -30,7 +30,12 @@
     <div in:fade="{{ duration: 1000 }}">
         <h1>
             <Icon name="check-double" />
-            {format(points)}/{format(quiz.questions.length)}
+            {format(points)}/{format(quiz.questions.length)} ({format(100 * points / quiz.questions.length)}%) 
+            {#if (quiz.config.passPercent <= (100 * points / quiz.questions.length))}
+            <span class="quizPass">Pass</span> 
+            {:else}
+            <span class="quizFail">Fail</span>
+            {/if}
         </h1>
 
         <ol>
@@ -89,5 +94,11 @@
     .list-comment {
         margin-left: 2em;
         list-style-type: initial;
+    }
+    .quizPass {
+        color: green;
+    }
+    .quizFail{
+        color: red;
     }
 </style>
