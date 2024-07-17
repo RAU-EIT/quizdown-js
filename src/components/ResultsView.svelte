@@ -31,13 +31,17 @@
         <h1>
             <Icon name="check-double" />
             {format(points)}/{format(quiz.questions.length)} ({format(100 * points / quiz.questions.length)}%) 
-            {#if (quiz.config.passPercent <= (100 * points / quiz.questions.length))}
-            <span class="quizPass">Pass</span> 
-            {:else}
-            <span class="quizFail">Fail</span>
-            {/if}
         </h1>
-
+        {#if (typeof quiz.config.passPercent != 'undefined')}
+        <p>
+        {#if (quiz.config.passPercent <= (100 * points / quiz.questions.length))}
+        <span class="quizdown_quizPass">Passed!</span> 
+        {:else}
+        <span class="quizdown_quizFail">Please try again.</span>
+        {/if}
+        <span class="quizdown_passPercent">({format(quiz.config.passPercent)}% required)</span>
+        </p>
+        {/if}
         <ol>
             {#each quiz.questions as question, i}
                 <li class="top-list-item" on:click="{() => {
@@ -95,10 +99,18 @@
         margin-left: 2em;
         list-style-type: initial;
     }
-    .quizPass {
+    .quizdown_quizPass {
         color: green;
+        font-weight: bold;
+        font-size:1.5em;
     }
-    .quizFail{
+    .quizdown_quizFail{
+        font-size:1.5em;
+        font-weight:bold;
         color: red;
+    }
+    .quizdown_passPercent{
+        font-size: 0.9em;
+        font-style: italic;
     }
 </style>

@@ -265,15 +265,13 @@ export class Quiz {
             }
         }
         this.isEvaluated.set(true);
+
+        // if the passPercent is undefined, there's not really a pass or fail? it just gets evaluated?
+        this.isPassed.set(typeof this.config.passPercent != 'undefined' ? this.config.passPercent <= (100 * points / this.questions.length) : false )
         
+
         if (typeof this.config.evaluateCallback == 'function') {
             // parameters must be # of questions, points awarded, passPercent
-            if (this.config.passPercent > 0) {
-                this.isPassed.set(this.config.passPercent <= (100 * points / this.questions.length));
-                this.config.evaluateCallback(this.questions.length, points, this.config.passPercent);
-            } else {
-                this.config.evaluateCallback(this.questions.length, points, -1);
-            }
             this.config.evaluateCallback(this.questions.length, points, this.config.passPercent);
         }
         return points;
